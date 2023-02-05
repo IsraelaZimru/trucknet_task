@@ -5,17 +5,17 @@
     display: flex
     flex-direction: column-reverse
   input 
-    /* all: unset; */
     border: none
     padding-left: 0%
     margin-bottom: 2%
     border-radius: 0%
     border-bottom: 1px solid black
     width:100%
-    &:not(#name) 
-      flex-direction: row-reverse
-      flex-wrap: wrap
-      text-align: end
+    &:not(#name)
+      &:focus
+        flex-direction: row-reverse
+        flex-wrap: wrap
+        text-align: end
 
     &:focus
       box-shadow: none
@@ -26,4 +26,4 @@
         visibility: visible
 
 
-  
+

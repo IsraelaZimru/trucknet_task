@@ -12,7 +12,7 @@ function App() {
   return (
     <div id="page">
       <EventForm onSubmit={addEvent} />
-      <EventList list={events} />
+      <EventList events={events} />
     </div>
   );
 }

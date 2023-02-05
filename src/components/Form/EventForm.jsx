@@ -4,36 +4,23 @@ import "./EventForm.sass";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
+const initialState = {
+  name: {
+    isRequired: true,
+    value: "",
+  },
+  startTime: {
+    isRequired: true,
+    value: "",
+  },
+  endTime: {
+    isRequired: true,
+    value: "",
+  },
+};
 export default function EventForm({ onSubmit }) {
-  const [error, setError] = useState(false);
-  const [showLogin, setShowLogin] = useState(true);
-
-  const [validated, setValidated] = useState(false);
-  const [details, setDetails] = useState({
-    name: {
-      isRequired: true,
-      pattern: /\w{2,}/,
-      msg: [],
-      value: "",
-      isInValid: false,
-    },
-    startTime: {
-      isRequired: true,
-      pattern:
-        /^([1-9]|([012][0-9])|(3[01]))\-([0]{0,1}[1-9]|1[012])\-\d\d\d\d\s([0-1]?[0-9]|2?[0-3]):([0-5]\d)$/,
-      msg: [],
-      value: "",
-      isInValid: false,
-    },
-    endTime: {
-      isRequired: true,
-      pattern:
-        /^([1-9]|([012][0-9])|(3[01]))\-([0]{0,1}[1-9]|1[012])\-\d\d\d\d\s([0-1]?[0-9]|2?[0-3]):([0-5]\d)$/,
-      msg: [],
-      value: "",
-      isInValid: false,
-    },
-  });
+  const [validated, setValidated] = useState(true);
+  const [details, setDetails] = useState(initialState);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,46 +31,30 @@ export default function EventForm({ onSubmit }) {
     };
     console.log("newEvent", newEvent);
     onSubmit(newEvent);
+    setDetails(initialState);
   };
 
-  const checkingMatch = () => {};
-
   function update({ target: { name, value } }) {
-    const errorMsg = [];
-    let isMsgShowing = false;
-    if (value === "") {
-      isMsgShowing = true;
-      errorMsg.push(`This Field is Required`);
-    } else if (details[name].isRequired && details[name].pattern.test(value)) {
-      isMsgShowing = false;
-    } else {
-      errorMsg.push(`Not Valid.`);
-      isMsgShowing = true;
-    }
-    // console.log(
-    //   name,
-    //   "value",
-    //   value,
-    //   "isMsgShowing",
-    //   isMsgShowing,
-    //   "errorMsg",
-    //   errorMsg
-    // );
     setDetails((prevDetails) => ({
       ...prevDetails,
       [name]: {
         ...prevDetails[name],
-        value,
-        isInValid: isMsgShowing,
-        msg: errorMsg,
+        value: name !== "name" ? new Date(value) : value,
       },
     }));
-    return errorMsg[0]; //importent for sumbit form!!!
+
+    let btnDisabled = false;
+    for (const filed in details) {
+      if (!details[filed].value) {
+        btnDisabled = true;
+      }
+    }
+    setValidated(btnDisabled);
   }
 
   return (
     <Card id="formCard" className="container">
-      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+      <Form noValidate onSubmit={handleSubmit}>
         <h1 className="display-4 text-left">New Event</h1>
 
         <Form.Group>
@@ -104,11 +75,19 @@ export default function EventForm({ onSubmit }) {
         <Form.Group>
           <InputGroup className="input_container">
             <Form.Control
-              type="datetime-local"
+              type="text"
               name="startTime"
-              onBlur={update}
+              onBlur={(e) => (e.target.type = "text")}
               onChange={update}
-              value={details.startTime.value}
+              onFocus={(e) => (e.target.type = "datetime-local")}
+              value={
+                details.startTime.value
+                  ? details.startTime.value
+                      .toISOString()
+                      .replace("T", ", ")
+                      .substring(0, 19)
+                  : ""
+              }
               placeholder="Start time"
             />
             <Form.Label>Start Time</Form.Label>
@@ -118,18 +97,27 @@ export default function EventForm({ onSubmit }) {
         <Form.Group>
           <InputGroup className="input_container">
             <Form.Control
-              type="datetime-local"
+              id="end_time"
+              type="text"
               name="endTime"
-              onBlur={update}
+              onBlur={(e) => (e.target.type = "text")}
               onChange={update}
-              value={details.endTime.value}
+              onFocus={(e) => (e.target.type = "datetime-local")}
+              value={
+                details.endTime.value
+                  ? details.endTime.value
+                      .toISOString()
+                      .replace("T", ", ")
+                      .substring(0, 19)
+                  : ""
+              }
               placeholder="End time"
             />
             <Form.Label>End Time</Form.Label>
           </InputGroup>
         </Form.Group>
 
-        <Button variant="outline-dark" type="submit">
+        <Button variant="outline-dark" type="submit" disabled={validated}>
           CREATE EVENT
         </Button>
       </Form>
