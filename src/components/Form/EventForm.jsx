@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Card, Form, InputGroup } from "react-bootstrap";
+import { Row, Col, Button, Card, Form, InputGroup } from "react-bootstrap";
 import "./EventForm.sass";
 import { dateFormatter } from "../../utils/helpers";
 
@@ -54,7 +54,14 @@ export default function EventForm({ onSubmit }) {
   return (
     <Card id="formCard" className="container">
       <Form noValidate onSubmit={handleSubmit}>
-        <h1 className="display-5 text-left">New Event</h1>
+        <Row id="header" className="justify-content-between">
+          <Col sm={10}>
+            <h2 className="title">New Event</h2>
+          </Col>
+          <Col className="text-center">
+            <p className="delete_btn ">X</p>
+          </Col>
+        </Row>
 
         <Form.Group>
           <InputGroup className="input_container">
@@ -110,9 +117,16 @@ export default function EventForm({ onSubmit }) {
           </InputGroup>
         </Form.Group>
 
-        <Button variant="outline-dark" type="submit" disabled={validated}>
-          CREATE EVENT
-        </Button>
+        <div className="text-right">
+          <button
+            variant="outline-dark"
+            type="submit"
+            className={!validated ? "btn_submit_able" : "disable_btn"}
+            disabled={validated}
+          >
+            CREATE EVENT
+          </button>
+        </div>
       </Form>
     </Card>
   );
