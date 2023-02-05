@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { Button, Card, Collapse, InputGroup, Alert } from "react-bootstrap";
+import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import "./EventForm.sass";
-import Form from "react-bootstrap/Form";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
+import { dateFormatter } from "../../utils/helpers";
 
 const initialState = {
   name: {
@@ -55,7 +54,7 @@ export default function EventForm({ onSubmit }) {
   return (
     <Card id="formCard" className="container">
       <Form noValidate onSubmit={handleSubmit}>
-        <h1 className="display-4 text-left">New Event</h1>
+        <h1 className="display-5 text-left">New Event</h1>
 
         <Form.Group>
           <InputGroup className="input_container">
@@ -82,10 +81,7 @@ export default function EventForm({ onSubmit }) {
               onFocus={(e) => (e.target.type = "datetime-local")}
               value={
                 details.startTime.value
-                  ? details.startTime.value
-                      .toISOString()
-                      .replace("T", ", ")
-                      .substring(0, 19)
+                  ? dateFormatter(details.startTime.value)
                   : ""
               }
               placeholder="Start time"
@@ -105,10 +101,7 @@ export default function EventForm({ onSubmit }) {
               onFocus={(e) => (e.target.type = "datetime-local")}
               value={
                 details.endTime.value
-                  ? details.endTime.value
-                      .toISOString()
-                      .replace("T", ", ")
-                      .substring(0, 19)
+                  ? dateFormatter(details.endTime.value)
                   : ""
               }
               placeholder="End time"

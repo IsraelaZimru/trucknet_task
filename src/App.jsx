@@ -9,10 +9,15 @@ function App() {
   const addEvent = (newEvent) => {
     setEvents((prev) => [...prev, newEvent]);
   };
+
+  const deletEvent = (item) => {
+    const filterd = events.filter((x) => x !== item);
+    setEvents(filterd);
+  };
   return (
     <div id="page">
       <EventForm onSubmit={addEvent} />
-      <EventList events={events} />
+      <EventList events={events} onDelete={deletEvent} />
     </div>
   );
 }
