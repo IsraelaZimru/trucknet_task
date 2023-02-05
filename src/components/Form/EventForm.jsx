@@ -118,14 +118,9 @@ export default function EventForm({ onSubmit }) {
         </Form.Group>
 
         <div className="text-right">
-          <button
-            variant="outline-dark"
-            type="submit"
-            className={!validated ? "btn_submit_able" : "disable_btn"}
-            disabled={validated}
-          >
+          <Button variant="outline-dark" type="submit" disabled={validated}>
             CREATE EVENT
-          </button>
+          </Button>
         </div>
       </Form>
     </Card>
