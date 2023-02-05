@@ -5,10 +5,10 @@ import EventForm from "./components/Form/EventForm";
 
 function App() {
   return (
-    <>
+    <div id="page">
       <EventForm />
       <EventList />
-    </>
+    </div>
   );
 }
 

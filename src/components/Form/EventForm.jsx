@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
-import {
-  Button,
-  Card,
-  Form,
-  Collapse,
-  InputGroup,
-  Alert,
-} from "react-bootstrap";
+import { Button, Card, Collapse, InputGroup, Alert } from "react-bootstrap";
 import "./EventForm.css";
+import Form from "react-bootstrap/Form";
+import FloatingLabel from "react-bootstrap/FloatingLabel";
 
 export default function EventForm() {
   const onClose = () => {};
@@ -48,7 +43,7 @@ export default function EventForm() {
 
   const checkingMatch = () => {};
 
-  function update({ name, value }) {
+  function update({ target: { name, value } }) {
     const errorMsg = [];
     let isMsgShowing = false;
     if (value === "") {
@@ -82,7 +77,7 @@ export default function EventForm() {
   }
   return (
     <div>
-      <Card id="formCard">
+      <Card id="formCard" className="container">
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <h1 className="display-4 text-left">New Event</h1>
 
@@ -108,7 +103,7 @@ export default function EventForm() {
             <Form.Label>Start Time</Form.Label>
             <InputGroup hasValidation>
               <Form.Control
-                type="text"
+                type="date"
                 name="startTime"
                 onBlur={update}
                 onChange={update}
@@ -126,7 +121,7 @@ export default function EventForm() {
             <Form.Label>End Time</Form.Label>
             <InputGroup hasValidation>
               <Form.Control
-                type="text"
+                type="date"
                 name="endTime"
                 onBlur={update}
                 onChange={update}

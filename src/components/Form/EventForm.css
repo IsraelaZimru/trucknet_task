@@ -1,0 +1,10 @@
+#formCard input {
+  /* all: unset; */
+  border: none;
+  border-radius: 0%;
+  border-bottom: 1px solid black;
+}
+
+#formCard input:focus {
+  box-shadow: none;
+}
