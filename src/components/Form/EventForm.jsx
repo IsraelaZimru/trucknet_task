@@ -1,14 +1,10 @@
 import { useState, useEffect } from "react";
 import { Button, Card, Collapse, InputGroup, Alert } from "react-bootstrap";
-import "./EventForm.css";
+import "./EventForm.sass";
 import Form from "react-bootstrap/Form";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 
-export default function EventForm() {
-  const onClose = () => {};
-  const setConnected = () => {};
-  const setUser = () => {};
-
+export default function EventForm({ onSubmit }) {
   const [error, setError] = useState(false);
   const [showLogin, setShowLogin] = useState(true);
 
@@ -39,7 +35,16 @@ export default function EventForm() {
     },
   });
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newEvent = {
+      name: details.name.value,
+      startTime: details.startTime.value,
+      endTime: details.endTime.value,
+    };
+    console.log("newEvent", newEvent);
+    onSubmit(newEvent);
+  };
 
   const checkingMatch = () => {};
 
@@ -55,91 +60,79 @@ export default function EventForm() {
       errorMsg.push(`Not Valid.`);
       isMsgShowing = true;
     }
-    console.log(
-      name,
-      "value",
-      value,
-      "isMsgShowing",
-      isMsgShowing,
-      "errorMsg",
-      errorMsg
-    );
+    // console.log(
+    //   name,
+    //   "value",
+    //   value,
+    //   "isMsgShowing",
+    //   isMsgShowing,
+    //   "errorMsg",
+    //   errorMsg
+    // );
     setDetails((prevDetails) => ({
       ...prevDetails,
       [name]: {
         ...prevDetails[name],
         value,
-        isInVaild: isMsgShowing,
+        isInValid: isMsgShowing,
         msg: errorMsg,
       },
     }));
     return errorMsg[0]; //importent for sumbit form!!!
   }
+
   return (
-    <div>
-      <Card id="formCard" className="container">
-        <Form noValidate validated={validated} onSubmit={handleSubmit}>
-          <h1 className="display-4 text-left">New Event</h1>
+    <Card id="formCard" className="container">
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <h1 className="display-4 text-left">New Event</h1>
 
-          <Form.Group className="">
-            <Form.Label>Name of the Event</Form.Label>
-            <InputGroup hasValidation>
-              <Form.Control
-                type="text"
-                name="name"
-                onBlur={update}
-                onChange={update}
-                value={details.name.value}
-                placeholder="Name of the Event"
-                isInvalid={details.name.isInValid}
-              />
-              <Form.Control.Feedback type="invalid" className="feedback">
-                {details.name.msg}
-              </Form.Control.Feedback>
-            </InputGroup>
-          </Form.Group>
+        <Form.Group>
+          <InputGroup className="input_container">
+            <Form.Control
+              id="name"
+              type="text"
+              name="name"
+              onBlur={update}
+              onChange={update}
+              value={details.name.value}
+              placeholder="Name of the Event"
+            />
+            <Form.Label className="label_show">Name of the Event</Form.Label>
+          </InputGroup>
+        </Form.Group>
 
-          <Form.Group>
+        <Form.Group>
+          <InputGroup className="input_container">
+            <Form.Control
+              type="datetime-local"
+              name="startTime"
+              onBlur={update}
+              onChange={update}
+              value={details.startTime.value}
+              placeholder="Start time"
+            />
             <Form.Label>Start Time</Form.Label>
-            <InputGroup hasValidation>
-              <Form.Control
-                type="date"
-                name="startTime"
-                onBlur={update}
-                onChange={update}
-                value={details.startTime.value}
-                placeholder="Start time"
-                isInvalid={details.startTime.isInValid}
-              />
-              <Form.Control.Feedback type="invalid" className="feedback">
-                {details.startTime.msg}
-              </Form.Control.Feedback>
-            </InputGroup>
-          </Form.Group>
+          </InputGroup>
+        </Form.Group>
 
-          <Form.Group>
+        <Form.Group>
+          <InputGroup className="input_container">
+            <Form.Control
+              type="datetime-local"
+              name="endTime"
+              onBlur={update}
+              onChange={update}
+              value={details.endTime.value}
+              placeholder="End time"
+            />
             <Form.Label>End Time</Form.Label>
-            <InputGroup hasValidation>
-              <Form.Control
-                type="date"
-                name="endTime"
-                onBlur={update}
-                onChange={update}
-                value={details.endTime.value}
-                placeholder="End time"
-                isInvalid={details.endTime.isInValid}
-              />
-              <Form.Control.Feedback type="invalid" className="feedback">
-                {details.endTime.msg}
-              </Form.Control.Feedback>
-            </InputGroup>
-          </Form.Group>
+          </InputGroup>
+        </Form.Group>
 
-          <Button variant="outline-dark" type="submit">
-            Submit{" "}
-          </Button>
-        </Form>
-      </Card>
-    </div>
+        <Button variant="outline-dark" type="submit">
+          CREATE EVENT
+        </Button>
+      </Form>
+    </Card>
   );
 }
